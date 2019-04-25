@@ -1,0 +1,80 @@
+<div class="container">
+  <input type="button" class="btn btn-primary" (click)="loadAddnew()" data-toggle="modal" data-target="#myModal" value="Create New">
+  <hr>
+  <div *ngIf="!dataavailable">
+
+    <h4> No Index Data is present Click Add new to add Data.</h4>
+  </div>
+
+
+  <table class="table" *ngIf="dataavailable">
+    <thead>
+      <tr>
+        <th scope="col">Seri.No</th>
+        <th scope="col">Message</th>
+        <th scope="col">Create Date</th>
+        <th scope="col">Log Type</th>
+        <th scope="col" style="align-content: center">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let i of indlist let in = index ">
+        <td scope="col">{{in+1}}</td>
+        <td scope="col">{{i.Message}}</td>
+        <td scope="col">{{i.CreateDate}}</td>
+        <td scope="col">{{i.LogType=="1"?'Exception':'Trace'}}</td>
+        <td style="display:none">{{i.ID}}</td>
+        <td scope="col">
+          <button type="button" class="btn btn-default btn-primary" (click)="loadnewForm(i.id,i.Message,i.CreateDate,i.LogType)"
+                  data-toggle="modal" data-target="#myModaledit">
+            <span class="glyphicon glyphicon-edit"></span> Edit
+          </button>
+          |
+          <button type="button" class="btn btn-default btn-danger" (click)="deleteconfirmation(i.id)">
+            <span class="glyphicon glyphicon-trash"></span> Delete
+          </button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-primary">Add</h4>
+        </div>
+        <div class="modal-body">
+
+
+          <app-add-index #indadd (nameEvent)="RefreshData($event)"></app-add-index>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" #closeBtn class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="myModaledit" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Edit</h4>
+        </div>
+        <div class="modal-body">
+          <app-indexupdate (nameEvent)="RefreshData($event)" [isReset]="resetForm" #regForm></app-indexupdate>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
